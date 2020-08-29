@@ -1,0 +1,51 @@
+package com.company;
+
+import java.util.ArrayDeque;
+import java.util.Scanner;
+
+public class SimpleTextEditor {
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        int n = Integer.parseInt(scan.nextLine());// Numbers of commands
+        StringBuilder theText = new StringBuilder();
+        ArrayDeque<String> toUndo = new ArrayDeque<>(); // Better to make a MAP??
+        ArrayDeque<Integer> OP = new ArrayDeque<>(); // MAP?
+
+        for (int i = 0; i < n; i++) {
+            String[] tokens = scan.nextLine().split("\\s+");
+            String command = tokens[0];
+
+            switch (command) {
+                case "1":
+                    theText.append(tokens[1]);
+                    toUndo.push(tokens[1]);
+                    OP.push(1);
+                    break;
+                case "2":
+                    int count = Integer.parseInt(tokens[1]);
+                    int startIndex = theText.length() - count;
+                    int endIndex = theText.length();
+                    toUndo.push(theText.substring(startIndex, endIndex));
+                    theText.delete(startIndex, endIndex); //123
+                    OP.push(2);
+                    break;
+                case "3":
+                    int index = Integer.parseInt(tokens[1]);
+                    System.out.println(theText.charAt(index - 1));
+                    break;
+                case "4":
+                    if (OP.peek() == 1) { // peek and then pop(line 41)
+                        int start = theText.length() - toUndo.pop().length();
+                        int end = theText.length();
+                        theText.delete(start, end);
+                        OP.pop();
+                    } else if (OP.peek() == 2) { // peek and then pop(line44)
+                        theText.append(toUndo.pop());
+                        OP.pop();
+                    }
+
+                    break;
+            }
+        }
+    }
+}
