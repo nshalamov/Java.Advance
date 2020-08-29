@@ -1,0 +1,22 @@
+package com.company;
+
+import java.util.ArrayDeque;
+import java.util.Scanner;
+
+public class ReverseNumbers {
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+
+        String[] nums = scan.nextLine().split("\\s+");
+        ArrayDeque<String> numbers = new ArrayDeque<>();
+
+        for (String num : nums) {
+            numbers.push(num);
+        }
+
+        while (!numbers.isEmpty()) {
+            System.out.print(numbers.pop() + " ");
+        }
+    }
+}
