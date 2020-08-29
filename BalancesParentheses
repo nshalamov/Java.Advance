@@ -1,0 +1,71 @@
+package com.company;
+
+import java.util.ArrayDeque;
+import java.util.Scanner;
+
+public class BalancedParentheses { // From the first attempt
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        String[] input = scan.nextLine().split("");
+        ArrayDeque<Character> symbols = new ArrayDeque<>();
+        boolean yes = true;
+
+        for (int i = 0; i < input.length; i++) {
+            char current = input[i].charAt(0);
+            if (current == '(' || current == '{' || current == '[') { // If parenthesis are opening -
+                // we push.
+                symbols.push(current);
+            } else { // If closing - we check if it is responding to the symbol on the top of the stackc
+                if (current == ')') {
+                    if (!symbols.isEmpty()) {
+                        if (symbols.peek() == '(') {
+                            symbols.pop();
+                        } else {
+                            System.out.println("NO");
+                            yes = false;
+                            break;
+                        }
+                    } else {
+                        System.out.println("NO");
+                        yes = false;
+                        break;
+                    }
+                } else if (current == '}') {
+                    if (!symbols.isEmpty()) {
+                        if (symbols.peek() == '{') {
+                            symbols.pop();
+                        } else {
+                            System.out.println("NO");
+                            yes = false;
+                            break;
+                        }
+                    } else {
+                        System.out.println("NO");
+                        yes = false;
+                        break;
+                    }
+                } else if (current == ']') {
+                    if (!symbols.isEmpty()) {
+                        if (symbols.peek() == '[') {
+                            symbols.pop();
+                        } else {
+                            System.out.println("NO");
+                            yes = false;
+                            break;
+                        }
+                    } else {
+                        System.out.println("NO");
+                        yes = false;
+                        break;
+                    }
+                }
+            }
+
+        }
+
+        if (yes) {
+            System.out.println("YES");
+        }
+
+    }
+}
