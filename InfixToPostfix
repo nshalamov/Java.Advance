@@ -1,0 +1,49 @@
+package com.company;
+
+import java.util.ArrayDeque;
+import java.util.Scanner;
+
+public class InfixToPostfix {
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        String[] input = scan.nextLine().split("\\s+");
+        ArrayDeque<String> OPStack = new ArrayDeque<>();
+        ArrayDeque<String> outputQueue = new ArrayDeque<>();
+
+        for (String current : input) { // if it's a digit
+            if (!"+-*/()".contains(current)) {
+                outputQueue.offer(current);
+            } else if (current.equals("(")) { // we push the '('
+                OPStack.push(current);
+            } else if (current.equals(")")) { // if we meet a ')' we pop everything to the queue until the '('
+                while (!OPStack.isEmpty() && !OPStack.peek().equals("(")) {
+                    outputQueue.offer(OPStack.pop());
+                }
+                OPStack.pop(); // we delete the '(' sign
+            } else {
+                if ("+-".contains(current)) { // if we meet either '+' or '-' we do following: 
+                    // UNTIL the stack contains elements AND the top element is NOT a '(' we pop everything 
+                    // from the stack to the queue
+                    while (!OPStack.isEmpty() && !OPStack.peek().equals("(")) {
+                        outputQueue.offer(OPStack.pop());
+                    }
+                } else { // if we meet a '*' or '/' we do following: UNTIL the stack contains elements AND 
+                    // the top element is NOT a '+' '-' or a '(' we pop everything to the queue
+                    while (!OPStack.isEmpty() && !"+-(".contains(OPStack.peek())) {
+                        outputQueue.offer(OPStack.pop());
+                    }
+                }
+                
+                OPStack.push(current); // and then we push the current element
+            }
+
+        }
+
+        while (!OPStack.isEmpty()) { // after we ran out of elements we pop the rest to the queue
+            outputQueue.offer(OPStack.pop());
+        }
+
+        System.out.println(String.join(" ", outputQueue)); // and finally print the queue
+    }
+}
