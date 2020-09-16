@@ -1,0 +1,51 @@
+package com.company;
+
+import java.util.ArrayDeque;
+import java.util.Scanner;
+
+public class BrowserHistoryUpgrade { // an OK solution
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        String input = scan.nextLine();
+        ArrayDeque<String> stack = new ArrayDeque<>();
+        ArrayDeque<String> queue = new ArrayDeque<>();
+        String currentURL = "";
+        boolean flag = false; // to restrict printing in the end *
+
+        while (!input.equals("Home")) {
+            if (input.equals("back")) { // back case
+                if (!stack.isEmpty()) {
+                    queue.addFirst(currentURL); // queue reacts only to the back command
+                    currentURL = stack.pop();
+                } else {
+                    System.out.println("no previous URLs");
+                    flag = true; //*
+                }
+
+            } else if (input.equals("forward")) {
+                if (!queue.isEmpty()) {
+                    stack.push(currentURL); //prepare current for the possible back command
+                    currentURL = queue.poll();
+                } else {
+                    System.out.println("no next URLs");
+                    flag = true; //*
+                }
+
+            } else {
+                if (!currentURL.isEmpty()) {
+                    stack.push(currentURL);
+                    queue.clear(); // in case of a new URL we must clear the queue
+                }
+
+                currentURL = input;
+            }
+
+            if (!currentURL.isEmpty() && !flag) { //*
+                System.out.println(currentURL);
+            }
+
+            flag = false; //*
+            input = scan.nextLine();
+        }
+    }
+}
