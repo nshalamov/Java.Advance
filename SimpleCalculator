@@ -1,0 +1,38 @@
+package com.company;
+
+import java.util.ArrayDeque;
+import java.util.Scanner;
+
+public class SimpleCalculator { // one of the many ideas: push push push -> pop pop pop -> result -> repeat
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        String input = scan.nextLine();
+        String[] tokens = input.split("\\s+");
+        ArrayDeque<String> stack = new ArrayDeque<>();
+
+        for (String token : tokens) {
+            stack.push(token);
+            if (stack.size() == 3) {
+                int b = Integer.parseInt(stack.pop());
+                String OP = stack.pop();
+                int a = Integer.parseInt(stack.pop());
+                switch (OP) {
+                    case "+":
+                        int result = a + b;
+                        stack.push(Integer.toString(result));
+                        break;
+                    case "-":
+                        result = a - b;
+                        stack.push(Integer.toString(result));
+                        break;
+
+                }
+
+            }
+
+        }
+
+        String result = stack.pop();
+        System.out.println(result);
+    }
+}
