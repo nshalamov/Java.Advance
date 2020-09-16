@@ -1,0 +1,56 @@
+package com.company;
+
+import java.util.ArrayDeque;
+import java.util.Scanner;
+
+public class MathPotato { // same story, just with one extra check-up
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        String input = scan.nextLine();
+        int n = Integer.parseInt(scan.nextLine());
+        String[] tokens = input.split("\\s+");
+        ArrayDeque<String> names = new ArrayDeque<>();
+
+        // we offer all the names to from the tokens array
+        for (String token : tokens) {
+            names.offer(token);
+        }
+
+        int counter = 0; //cycle counter
+        // we offer the names, that we poll n times minus 1(because we go counter-clockwise)
+        while (names.size() > 1) {
+            for (int i = 0; i < n - 1; i++) {
+                names.offer(names.poll());
+            }
+
+            counter++;
+            // prime check
+            if (checkPrime(counter)) {
+                System.out.printf("Prime %s%n", names.peek());
+            } else {
+                System.out.printf("Removed %s%n", names.poll());
+            }
+        }
+
+        // we print the last guy
+        System.out.printf("Last is %s", names.poll());
+    }
+
+
+    static boolean checkPrime(int n) {
+        int i, m = 0;
+        m = n / 2; // in order to avoid unnecessary calculations
+
+        if (n == 0 || n == 1) { // to cut off the obvious false cases
+            return false;
+        } else {
+            for (i = 2; i <= m; i++) {
+                if (n % i == 0) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+}
